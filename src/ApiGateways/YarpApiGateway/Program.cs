@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.RateLimiting;
+using YarpApiGateway.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +16,13 @@ builder.Services.AddRateLimiter(rateLimiterOptions =>
     });
 });
 
+builder.Services.AddHttpClient();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<TokenValidationMiddleware>();
+
 app.UseRateLimiter();
 
 app.MapReverseProxy();

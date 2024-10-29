@@ -13,6 +13,9 @@ services:
   orderdb:
     image: mcr.microsoft.com/mssql/server
 
+  authdb:
+    image: mcr.microsoft.com/mssql/server
+
   messagebroker:
     image: rabbitmq:management
 
@@ -39,12 +42,12 @@ services:
     build:
       context: .
       dockerfile: Services/Ordering/Ordering.API/Dockerfile
-
-  yarpapigateway:
-    image: ${DOCKER_REGISTRY-}yarpapigateway
+  
+  email.api:
+    image: ${DOCKER_REGISTRY-}emailapi
     build:
       context: .
-      dockerfile: ApiGateway/YarpApiGateway/Dockerfile
+      dockerfile: Services/Email/Email.API/Dockerfile
 
   shopping.web:
     image: ${DOCKER_REGISTRY-}shoppingweb
@@ -52,9 +55,26 @@ services:
       context: .
       dockerfile: WebApps/Shopping.Web/Dockerfile
 
+  auth.api:
+    image: ${DOCKER_REGISTRY-}authapi
+    build:
+      context: .
+      dockerfile: Services/Auth/Auth.API/Dockerfile
+
+  yarpapigateway:
+    image: ${DOCKER_REGISTRY-}yarpapigateway
+    build:
+      context: .
+      dockerfile: ApiGateways/YarpApiGateway/Dockerfile
+
 volumes:
   postgres_catalog:
   postgres_basket:
+
+
+
+
+
 
 
 
